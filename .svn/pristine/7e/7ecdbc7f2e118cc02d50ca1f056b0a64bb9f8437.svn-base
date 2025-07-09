@@ -1,0 +1,21 @@
+#pragma once
+
+class Player
+{
+public:
+	void Init();
+	void Update(float deltaTime);
+	void Render(HDC hdc);
+
+	Vector GetForwardVector();
+
+private:
+	class TextureResource* _texture = nullptr;	// 리소스 매니저가 가지고 있는 원본 텍스처
+
+	Vector _pos;
+	
+	float _speed;
+	float _angle;
+	float _FOV;
+};
+

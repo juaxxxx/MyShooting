@@ -1,0 +1,46 @@
+#include "pch.h"
+#include "Enemy.h"
+#include "InputManager.h"
+#include "ResourceManager.h"
+#include "TextureResource.h"
+#include "TimerManager.h"
+#include "GameScene.h"
+
+void Enemy::Init()
+{
+	_pos.x = GWinSizeX / 2;	// 중앙 위치
+	_pos.y = 100;
+	_angle = DegreeToRadian(-90);
+	_texture = ResourceManager::GetInstance()->GetTexture("Enemy1");
+
+
+	// 공격 반복 타이머 설정
+	TimerManager::GetInstance()->AddTimer(2.0f, true, [this]() {Attack(); });
+}
+
+void Enemy::Update(float deltaTime)
+{
+
+}
+
+void Enemy::Render(HDC hdc)
+{
+	// winAPI 텍스처 그릴때, 위치를 기준으로 텍스처를 그리는데, 이때도 똑같이 _pos 는 중심위치로 생각하면
+	// 로직만들때 편하다.
+	if (_texture)
+	{
+		_texture->Render(hdc, _pos);
+	}
+}
+
+void Enemy::Attack()
+{
+	GameScene* gameScene = GameScene::GetGameScene();
+	if (gameScene == nullptr)
+		return;
+
+	Vector firePos;
+	firePos.x = _pos.x;
+	firePos.y = _pos.y + 30.0f;
+	gameScene->CreateMissile(firePos.x, firePos.y, _angle, false);
+}

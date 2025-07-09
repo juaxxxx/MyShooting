@@ -1,0 +1,110 @@
+#include "pch.h"
+#include "GameScene.h"
+#include "Player.h"
+#include "Missile.h"
+#include "Enemy.h"
+#include "Game.h"
+#include "BackGround.h"
+
+void GameScene::Init()
+{
+	// 플레이어 생성
+	_player = new Player();
+	_player->Init();
+
+	// 적 생성
+	_enemy = new Enemy();
+	_enemy->Init();
+
+	// 배경 생성
+	_backgroundA = new Background();
+	_backgroundA->Init(GWinSizeX / 2, 400.0f);
+	_backgroundB = new Background();
+	_backgroundB->Init(GWinSizeX / 2, -400.0f);
+}
+
+void GameScene::Destroy()
+{
+	SAFE_DELETE(_player);
+	SAFE_DELETE(_enemy);
+	SAFE_DELETE(_backgroundA);
+	SAFE_DELETE(_backgroundB);
+
+	for (auto iter : _missile)
+	{
+		delete iter;
+	}
+	_missile.clear();
+}
+
+void GameScene::Update(float deltaTime)
+{
+	if (_backgroundA && _backgroundB)
+	{
+		_backgroundA->Update(deltaTime);
+		_backgroundB->Update(deltaTime);
+	}
+
+	if (_player)
+	{
+		_player->Update(deltaTime);
+	}
+
+	if (_enemy)
+	{
+		_enemy->Update(deltaTime);
+	}
+
+	// 플레이어 함수입니다.
+	for (auto iter : _missile)
+	{
+		iter->Update(deltaTime);
+	}
+}
+
+void GameScene::Render(HDC hdc)
+{
+	if (_backgroundA && _backgroundB)
+	{
+		_backgroundA->Render(hdc);
+		_backgroundB->Render(hdc);
+	}
+	if (_player)
+	{
+		_player->Render(hdc);
+	}
+
+	if (_enemy)
+	{
+		_enemy->Render(hdc);
+	}
+
+	for (auto iter : _missile)
+	{
+		iter->Render(hdc);
+	}
+}
+
+GameScene* GameScene::GetGameScene()
+{
+	return dynamic_cast<GameScene*>(Game::GetInstance()->GetCurrScene());
+}
+
+
+void GameScene::CreateMissile(float posX, float posY, float angle, bool chase)
+{
+	Missile* missile = new Missile();
+	missile->Init(posX, posY, angle, chase);
+	_missile.push_back(missile);
+}
+
+void GameScene::RemoveMissile(Missile* missile)
+{
+	auto it = std::find(_missile.begin(), _missile.end(), missile);
+	_missile.erase(it);
+
+	// 객체도 소멸한다.
+	// 객체의 생성과 소멸은 모두 Game이라는 매니저가 총괄
+	// 이 코드는 괜찮을까요? 위험한 코드를 만들어야 하네.... 나중에 한번 고민해보자.TODO
+	delete missile;
+}

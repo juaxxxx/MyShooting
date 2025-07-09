@@ -1,0 +1,16 @@
+#pragma once
+class Background
+{
+public:
+	void Init(float posX, float posY);
+	void Update(float deltaTime);
+	void Render(HDC hdc);
+
+private:
+	Vector _pos;
+
+	float _speed;
+
+	class TextureResource* _texture = nullptr;
+};
+

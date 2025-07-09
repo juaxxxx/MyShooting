@@ -1,0 +1,21 @@
+#pragma once
+
+class Enemy
+{
+public:
+	void Init();
+	void Update(float deltaTime);
+	void Render(HDC hdc);
+	void Attack();
+	Vector GetPos() { return _pos; }
+
+private:
+	class TextureResource* _texture = nullptr;
+
+	Vector _pos;
+
+	float _speed;
+	float _angle;
+	float _FOV;
+};
+

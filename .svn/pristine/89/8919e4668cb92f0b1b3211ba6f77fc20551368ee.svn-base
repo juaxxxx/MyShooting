@@ -1,0 +1,69 @@
+#include "pch.h"
+#include "Player.h"
+#include "Game.h"
+#include "InputManager.h"
+#include "Enemy.h"
+#include "GameScene.h"
+#include "TextureResource.h"
+#include "ResourceManager.h"
+
+void Player::Init()
+{
+	// Player 정보 초기화
+	_pos.x = 100;
+	_pos.y = 100;
+	_angle = DegreeToRadian(90);
+	_FOV = DegreeToRadian(60);
+
+	_texture = ResourceManager::GetInstance()->GetTexture("Player");
+}
+
+void Player::Update(float deltaTime)
+{
+	GameScene* gameScene = GameScene::GetGameScene();
+	if (gameScene == nullptr)
+		return;
+
+	// W 키가 눌러졌으면 위로 이동.
+	// S 키가 눌러졌으면 아래로 이동.
+	if (InputManager::GetInstance()->GetButtonPressed(KeyType::W))
+	{
+		_pos.y -= (deltaTime * _speed);
+	}
+	if (InputManager::GetInstance()->GetButtonPressed(KeyType::S))
+	{
+		_pos.y += (deltaTime * _speed);
+	}
+	if (InputManager::GetInstance()->GetButtonPressed(KeyType::A))
+	{
+		_pos.x -= (deltaTime * _speed);
+	}
+	if (InputManager::GetInstance()->GetButtonPressed(KeyType::D))
+	{
+		_pos.x += (deltaTime * _speed);
+	}
+
+	if (InputManager::GetInstance()->GetButtonDown(KeyType::SpaceBar))
+	{
+
+	}
+}
+
+void Player::Render(HDC hdc)
+{
+	if (_texture) _texture->Render(hdc, _pos);
+
+}
+
+Vector Player::GetForwardVector()
+{
+	Vector playerPos = _pos;
+	Vector firePos;
+	firePos.x = _pos.x + ::cos(_angle) * 50;
+	firePos.y = _pos.y - ::sin(_angle) * 50;
+
+	Vector dir = firePos - playerPos;
+	dir.Normalize();
+
+	return dir;
+}

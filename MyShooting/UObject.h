@@ -15,7 +15,7 @@ public:
 	
 	virtual void Update(float deltaTime) {};
 	virtual void Render(HDC hdc) {};
-	virtual void OnColliderEnter() {};
+	virtual void OnColliderEnter() {}; // ±¸ÇöÀº Stay
 
 	void SetPos(Vector pos) { _pos = pos; }
 	void SetScale(Vector scale) { _scale = scale; }

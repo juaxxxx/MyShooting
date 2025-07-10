@@ -136,7 +136,10 @@
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameOverText.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="GUI.h" />
+    <ClInclude Include="HpHeart.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="MyShooting.h" />
@@ -153,6 +156,7 @@
     <ClInclude Include="TimerManager.h" />
     <ClInclude Include="UAnimation.h" />
     <ClInclude Include="UAnimator.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="UObject.h" />
   </ItemGroup>
   <ItemGroup>
@@ -165,7 +169,10 @@
     <ClCompile Include="EnemySpawner.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameOverText.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="HpHeart.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="MyShooting.cpp" />
@@ -181,6 +188,7 @@
     <ClCompile Include="TimerManager.cpp" />
     <ClCompile Include="UAnimation.cpp" />
     <ClCompile Include="UAnimator.cpp" />
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="UObject.cpp" />
   </ItemGroup>
   <ItemGroup>

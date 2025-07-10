@@ -34,6 +34,8 @@ void TextureResource::Load(wstring fileName)
 	// WinAPI 텍스처 로딩하는 방법
 	{
 		fs::path dirPath("C:/Users/inha/source/repos/SVNTest/MyShooting/MyShooting/Resources");
+		//fs::path dirPath("C:/Users/82102/Desktop/정리함/교육/WinAPI/MyShooting/Resources");
+
 		fs::path fullPath = dirPath / fileName;
 		//fs::path fullPath = fs::current_path() / fileName;
 

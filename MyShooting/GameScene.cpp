@@ -79,6 +79,7 @@ void GameScene::Render(HDC hdc)
 			}
 		}
 	}
+
 }
 
 void GameScene::Instantiate(LAYER_TYPE type, Vector pos)
@@ -181,4 +182,10 @@ void GameScene::RemoveMissile(Missile* missile)
 	// 객체의 생성과 소멸은 모두 Game이라는 매니저가 총괄
 	// 이 코드는 괜찮을까요? 위험한 코드를 만들어야 하네.... 나중에 한번 고민해보자.TODO
 	delete missile;
+}
+
+UObject* GameScene::GetPlayer()
+{
+	if (_objects[(uint32)LAYER_TYPE::PLAYER].size() == 0) return nullptr;
+	else return _objects[(uint32)LAYER_TYPE::PLAYER][0];
 }

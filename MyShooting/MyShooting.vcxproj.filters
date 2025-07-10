@@ -49,6 +49,9 @@
     <Filter Include="Animation">
       <UniqueIdentifier>{75ebca70-be4e-4f0c-952d-2670fca5f9e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{1aed1de3-9562-4586-b12d-3471e5975ce2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -135,6 +138,18 @@
     <ClInclude Include="EnemySpawner.h">
       <Filter>Object\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="HpHeart.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverText.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyShooting.cpp">
@@ -208,6 +223,18 @@
     </ClCompile>
     <ClCompile Include="EnemySpawner.cpp">
       <Filter>Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="HpHeart.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverText.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

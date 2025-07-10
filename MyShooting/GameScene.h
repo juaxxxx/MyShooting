@@ -25,7 +25,8 @@ public:
 	void RemoveMissile(class Missile* missile);
 
 	vector<UObject*> GetObjects(LAYER_TYPE layerType) { return _objects[(uint32)layerType]; }
-	//class Enemy* GetEnemy() { return _enemy; }
+	UObject* GetPlayer();
+	
 
 private:
 	// 게임 안 객체 관리

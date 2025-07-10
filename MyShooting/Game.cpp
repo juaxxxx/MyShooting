@@ -4,6 +4,7 @@
 #include "TimeManager.h"
 #include "TimerManager.h"
 #include "ResourceManager.h"
+#include "UIManager.h"
 
 #include "GameScene.h"
 #include "EditScene.h"
@@ -43,6 +44,7 @@ void Game::Init(HWND hwnd)
 	TimeManager::GetInstance()->Init();
 	ResourceManager::GetInstance()->Init();
 	TimerManager::GetInstance()->Init();
+	UIManager::GetInstance()->Init();
 
 	// 시작씬은 게임으로 설정
 	_currScene = new GameScene();
@@ -61,6 +63,7 @@ void Game::Destroy()
 	TimeManager::DestroyInstance();
 	TimerManager::DestroyInstance();
 	ResourceManager::GetInstance()->Destroy();
+	UIManager::GetInstance()->DestroyInstance();
 
 	if (_currScene)
 	{
@@ -74,6 +77,7 @@ void Game::Update()
 	InputManager::GetInstance()->Update();
 	TimeManager::GetInstance()->Update();
 	TimerManager::GetInstance()->Update(TimeManager::GetInstance()->GetDeltaTime());
+	UIManager::GetInstance()->Update();
 	if (_currScene)
 	{
 		_currScene->Update(TimeManager::GetInstance()->GetDeltaTime());
@@ -98,6 +102,8 @@ void Game::Render()
 	{
 		_currScene->Render(_hdcBack);	
 	}
+	UIManager::GetInstance()->Render(_hdcBack);
+
 	::BitBlt(_hdc, 0, 0, _rect.right, _rect.bottom, _hdcBack, 0, 0, SRCCOPY);
 	::PatBlt(_hdcBack, 0, 0, _rect.right, _rect.bottom, WHITENESS);
 }

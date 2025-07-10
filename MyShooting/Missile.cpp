@@ -7,7 +7,7 @@
 #include "ResourceManager.h"
 
 void Missile::Init(float posX, float posY, float angle, bool chase)
-{
+{ 
 	_pos = Vector(posX, posY);
 	_angle = angle;
 	_chase = chase;

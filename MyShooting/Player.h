@@ -14,7 +14,7 @@ public:
 	void OnDamaged();
 
 	Vector GetForwardVector();
-
+	uint32 GetHp() const { return _hp; }
 private:
 	float _speed;
 	float _angle;

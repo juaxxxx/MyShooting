@@ -49,6 +49,11 @@ void ResourceManager::Init()
         texture->Load(L"explosion.bmp");
         _textures["Explosion"] = texture;
     }
+    {
+        TextureResource* texture = new TextureResource();
+        texture->Load(L"PlayerHp.bmp");
+        _textures["PlayerHp"] = texture;
+    }
 }
 
 void ResourceManager::Destroy()

@@ -15,7 +15,7 @@ void Player::Init()
 	_speed = 300.0f;
 	_angle = DegreeToRadian(90);
 	_FOV = DegreeToRadian(60);
-
+	_hp = 3;
 	// Colider Init
 	_collider.radius = 10.0f;
 	_collider.offset = POINT(0, 0);
@@ -95,7 +95,10 @@ void Player::OnDamaged()
 
 	gameScene->Instantiate(LAYER_TYPE::EFFECT, _pos);
 
-	gameScene->DestroyObject(this, LAYER_TYPE::PLAYER);
+	_hp--;
+
+	if (_hp <= 0)
+		gameScene->DestroyObject(this, LAYER_TYPE::PLAYER);
 }
 
 Vector Player::GetForwardVector()

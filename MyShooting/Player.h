@@ -19,5 +19,6 @@ private:
 	float _speed;
 	float _angle;
 	float _FOV;
+	uint32 _hp;
 };
 

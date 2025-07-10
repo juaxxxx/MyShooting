@@ -133,7 +133,7 @@
       <Filter>Object\Missile</Filter>
     </ClInclude>
     <ClInclude Include="EnemySpawner.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -207,7 +207,7 @@
       <Filter>Object\Missile</Filter>
     </ClCompile>
     <ClCompile Include="EnemySpawner.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Object\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

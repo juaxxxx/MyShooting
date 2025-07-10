@@ -402,4 +402,4 @@ FodyWeavers.xsd
 
 # svn cache files
 *.svn
-.svn
+/.svn

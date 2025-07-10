@@ -2,8 +2,35 @@
 #include "TextureResource.h"
 #include "Game.h"
 
+TextureResource::~TextureResource()
+{
+	if (_textureHdc != nullptr)
+	{
+		::DeleteDC(_textureHdc);
+		_textureHdc = nullptr;
+	}
+	if (_bitmap != nullptr)
+	{
+		::DeleteObject(_bitmap);
+		_bitmap = nullptr;
+	}
+}
+
 void TextureResource::Load(wstring fileName)
 {
+	// 이전 리소스 해제
+	if (_textureHdc)
+	{
+		::DeleteDC(_textureHdc);
+		_textureHdc = nullptr;
+	}
+
+	if (_bitmap)
+	{
+		::DeleteObject(_bitmap);
+		_bitmap = nullptr;
+	}
+
 	// WinAPI 텍스처 로딩하는 방법
 	{
 		fs::path dirPath("C:/Users/inha/source/repos/SVNTest/MyShooting/MyShooting/Resources");
@@ -13,6 +40,8 @@ void TextureResource::Load(wstring fileName)
 		HDC hdc = ::GetDC(Game::GetInstance()->GetHwnd());
 
 		_textureHdc = ::CreateCompatibleDC(hdc);
+		::ReleaseDC(Game::GetInstance()->GetHwnd(), hdc); // GetDC로 얻은 HDC는 반드시 Release해야한다.
+
 		_bitmap = (HBITMAP)::LoadImageW(
 			nullptr,
 			fullPath.c_str(),
@@ -30,7 +59,7 @@ void TextureResource::Load(wstring fileName)
 		_transparent = RGB(252, 0, 255);
 
 		HBITMAP prev = (HBITMAP)::SelectObject(_textureHdc, _bitmap);
-		::DeleteObject(prev);
+		//::DeleteObject(prev);
 
 		BITMAP bit = {};
 		::GetObject(_bitmap, sizeof(BITMAP), &bit);

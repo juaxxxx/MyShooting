@@ -4,6 +4,15 @@
 #include "ResourceManager.h"
 #include "TextureResource.h"
 
+UAnimator::~UAnimator()
+{
+	for (auto iter : _anims)
+	{
+		SAFE_DELETE(iter.second);
+	}
+	_anims.clear();
+}
+
 void UAnimator::Play()
 {
 }

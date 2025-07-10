@@ -16,8 +16,28 @@ void ResourceManager::Init()
     }
     {
         TextureResource* texture = new TextureResource();
+        texture->Load(L"Enemy2.bmp");
+        _textures["Enemy2"] = texture;
+    }
+    {
+        TextureResource* texture = new TextureResource();
+        texture->Load(L"Enemy3.bmp");
+        _textures["Enemy3"] = texture;
+    }
+    {
+        TextureResource* texture = new TextureResource();
+        texture->Load(L"Enemy4.bmp");
+        _textures["Enemy4"] = texture;
+    }
+    {
+        TextureResource* texture = new TextureResource();
         texture->Load(L"Playerbullet.bmp");
         _textures["PlayerMISSILE"] = texture;
+    }
+    {
+        TextureResource* texture = new TextureResource();
+        texture->Load(L"EnemyBullet.bmp");
+        _textures["EnemyMISSILE"] = texture;
     }
     {
         TextureResource* texture = new TextureResource();
@@ -33,9 +53,10 @@ void ResourceManager::Init()
 
 void ResourceManager::Destroy()
 {
-    for (auto iter : _textures)
+    for (auto& iter : _textures)
     {
-        delete iter.second;
+        SAFE_DELETE(iter.second);
+        //delete iter.second;
     }
     _textures.clear();
 }

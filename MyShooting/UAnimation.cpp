@@ -30,13 +30,19 @@ Vector UAnimation::GetCurFrame()
 	return Vector(_frames[_curFrameCount].x, _frames[_curFrameCount].y);
 }
 
-void UAnimation::Init()
+void UAnimation::Init(int32 reps)
 {
-	// 애니메이션 바꿀 때 진행했던 값 초기화
+	_reps = reps;
 }
 
 void UAnimation::Update(float deltaTime)
 {
+	if (_reps == 0)
+	{
+		_canLoop = false;
+		return;
+	}
+
 	_time += deltaTime;
 
 	if (_time >= _gap)
@@ -44,6 +50,7 @@ void UAnimation::Update(float deltaTime)
 		if (_curFrameCount == _totalCount - 1)
 		{
 			_curFrameCount = 0;
+			if (_reps != -1) _reps--;
 		}
 		else
 		{
@@ -56,5 +63,6 @@ void UAnimation::Update(float deltaTime)
 
 void UAnimation::Render(HDC hdc)
 {
-	if (_texture) _texture->Render(hdc, _animator->GetOwner()->GetPos(), GetCurFrame(), Vector(TEXTURE_SIZE, TEXTURE_SIZE));
+	if (_canLoop && _texture) 
+		_texture->Render(hdc, _animator->GetOwner()->GetPos(), GetCurFrame(), Vector(TEXTURE_SIZE, TEXTURE_SIZE));
 }

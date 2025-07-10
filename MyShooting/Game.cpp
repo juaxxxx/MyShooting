@@ -8,15 +8,34 @@
 #include "GameScene.h"
 #include "EditScene.h"
 
+Game::~Game()
+{
+	if (_hdc)
+	{
+		::ReleaseDC(_hwnd, _hdc);
+	}
+	if (_bmpBack)
+	{
+		::DeleteObject(_bmpBack);
+		_bmpBack = nullptr;
+	}
+	if (_hdcBack)
+	{
+		::DeleteDC(_hdcBack);
+		_hdcBack = nullptr;
+	}
+}
+
 void Game::Init(HWND hwnd)
 {
+
 	_hwnd = hwnd;
 	_hdc = ::GetDC(hwnd);
 	::GetClientRect(hwnd, &_rect);
 	_hdcBack = ::CreateCompatibleDC(_hdc);
 	_bmpBack = ::CreateCompatibleBitmap(_hdc, _rect.right, _rect.bottom);
 	HBITMAP prev = (HBITMAP)::SelectObject(_hdcBack, _bmpBack);
-	::DeleteObject(prev);
+	//::DeleteObject(prev);
 
 
 	// Init
@@ -55,7 +74,6 @@ void Game::Update()
 	InputManager::GetInstance()->Update();
 	TimeManager::GetInstance()->Update();
 	TimerManager::GetInstance()->Update(TimeManager::GetInstance()->GetDeltaTime());
-
 	if (_currScene)
 	{
 		_currScene->Update(TimeManager::GetInstance()->GetDeltaTime());

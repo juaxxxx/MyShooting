@@ -5,10 +5,10 @@
 class Explosion : public UObject
 {
 public:
-	Explosion() {};
-	~Explosion() {};
+	Explosion() {}
+	~Explosion() override {}
 
-	void Init() override;
+	void Init(float posX, float posY) override;
 	void Update(float deltaTime) override;
 	void Render(HDC hdc) override;
 

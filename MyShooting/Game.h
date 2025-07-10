@@ -8,7 +8,7 @@ class Game : public Singleton<Game>
 
 protected:
 	Game(){}
-	~Game() {}
+	~Game();
 public:
 
 	void Init(HWND hwnd);

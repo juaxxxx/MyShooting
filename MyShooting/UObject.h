@@ -6,10 +6,11 @@ class UObject
 {
 public:
 	UObject() {};
-	virtual ~UObject() {};
+	virtual ~UObject();
 
 	virtual void Init() {};
 	virtual void Init(float posX, float posY, float angle, bool chase) {}; // Missile Init
+	virtual void Init(float posX, float posY, float angle, ENEMY_TYPE type) {}; // EnemyMissile Init
 	virtual void Init(float posX, float posY) {}; // Background Init
 	
 	virtual void Update(float deltaTime) {};
@@ -30,6 +31,5 @@ protected:
 	Vector _pos;
 	Vector _scale;
 	Collider _collider;
-	
 };
 

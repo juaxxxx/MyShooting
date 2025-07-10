@@ -3,39 +3,30 @@
 #include "UObject.h"
 #include "Player.h"
 #include "Missile.h"
+#include "EnemyMissile.h"
 #include "Enemy.h"
+#include "Enemy2.h"
 #include "Game.h"
 #include "BackGround.h"
 #include "Explosion.h"
+#include "EnemySpawner.h"
+
+GameScene::~GameScene()
+{
+
+}
 
 void GameScene::Init()
 {
-	// 플레이어 생성. 플레이어는 하나 뿐이기 때문에 _objects[(uint32)LAYER_TYPE::PLAYER]][0] 으로 해도 되려나
 	{
 		Player* object = new Player();
 		object->Init();
 		_objects[(uint32)LAYER_TYPE::PLAYER].push_back(object);
 	}
-	// 적 생성
 	{
-		Enemy* object = new Enemy();
-		object->Init(100, 100);
-		_objects[(uint32)LAYER_TYPE::ENEMY].push_back(object);
-	}
-	{
-		Enemy* object = new Enemy();
-		object->Init(200, 100);
-		_objects[(uint32)LAYER_TYPE::ENEMY].push_back(object);
-	}
-	{
-		Enemy* object = new Enemy();
-		object->Init(300, 100);
-		_objects[(uint32)LAYER_TYPE::ENEMY].push_back(object);
-	}
-	{
-		Enemy* object = new Enemy();
-		object->Init(400, 100);
-		_objects[(uint32)LAYER_TYPE::ENEMY].push_back(object);
+		EnemySpawner* object = new EnemySpawner();
+		object->Init(5.0f);
+		_objects[(uint32)LAYER_TYPE::ENEMYSPAWNER].push_back(object);
 	}
 	// 배경 생성
 	{
@@ -47,11 +38,6 @@ void GameScene::Init()
 		Background* object = new Background();
 		object->Init(GWinSizeX / 2, -400.0f);
 		_objects[(uint32)LAYER_TYPE::BACKGROUND].push_back(object);
-	}
-	{
-		Explosion* object = new Explosion();
-		object->Init();
-		_objects[(uint32)LAYER_TYPE::EFFECT].push_back(object);
 	}
 }
 
@@ -95,6 +81,61 @@ void GameScene::Render(HDC hdc)
 	}
 }
 
+void GameScene::Instantiate(LAYER_TYPE type, Vector pos)
+{
+	switch (type)
+	{
+	case LAYER_TYPE::BACKGROUND:
+
+		break;
+	case LAYER_TYPE::EFFECT:
+	{
+		Explosion* object = new Explosion();
+		object->Init(pos.x, pos.y);
+		_objects[(uint32)LAYER_TYPE::ENEMY].push_back(object);
+		break;
+	}
+	case LAYER_TYPE::ENEMY:
+	{
+		break;
+	}
+	case LAYER_TYPE::MISSILE:
+	{
+		break;
+	}
+	case LAYER_TYPE::PLAYER:
+		
+		break;
+	case LAYER_TYPE::END:
+		
+		break;
+	default:
+		
+		break;
+	}
+}
+
+void GameScene::Instantiate(ENEMY_TYPE type, Vector pos)
+{
+	switch (type)
+	{
+	case ENEMY_TYPE::ENEMY1:
+	{
+		Enemy* object = new Enemy();
+		object->Init(pos.x, pos.y);
+		_objects[(uint32)LAYER_TYPE::ENEMY].push_back(object);
+		break;
+	}
+	case ENEMY_TYPE::ENEMY2:
+	{
+		Enemy2* object = new Enemy2();
+		object->Init(pos.x, pos.y);
+		_objects[(uint32)LAYER_TYPE::ENEMY].push_back(object);
+		break;
+	}
+	}
+}
+
 void GameScene::DestroyObject(UObject* object, LAYER_TYPE layer)
 {
 	for (auto iter = _objects[(uint32)layer].begin(); iter != _objects[(uint32)layer].end();)
@@ -117,6 +158,12 @@ GameScene* GameScene::GetGameScene()
 	return dynamic_cast<GameScene*>(Game::GetInstance()->GetCurrScene());
 }
 
+void GameScene::CreateEnemyMissile(LAYER_TYPE type, Vector pos, float angle, ENEMY_TYPE enemytype)
+{
+	EnemyMissile* missile = new EnemyMissile();
+	missile->Init(pos.x, pos.y, angle, enemytype);
+	_objects[(uint32)LAYER_TYPE::ENEMYMISSILE].push_back(missile);
+}
 
 void GameScene::CreateMissile(float posX, float posY, float angle, bool chase)
 {

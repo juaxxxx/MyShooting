@@ -2,18 +2,18 @@
 
 #include "UObject.h"
 
-class Player : public UObject
+class Enemy2 : public UObject
 {
 public:
-	Player() {}
-	~Player() override {}
-	void Init() override;
+	Enemy2() : _speed(100.0f), _angle(90), _FOV(0) {}
+	~Enemy2() override {}
+	void Init(float posX, float posY) override;
 	void Update(float deltaTime) override;
 	void Render(HDC hdc) override;
 	void OnColliderEnter() override;
+	void Move(float deltaTime);
+	void Attack();
 	void OnDamaged();
-
-	Vector GetForwardVector();
 
 private:
 	float _speed;

@@ -4,10 +4,11 @@
 #include "UAnimation.h"
 #include "ResourceManager.h"
 #include "TextureResource.h"
+#include "GameScene.h"
 
-void Explosion::Init()
+void Explosion::Init(float posX, float posY)
 {
-	_pos = Vector(200, 200);
+	_pos = Vector(posX, posY);
 	_animFrame = Vector(0, 0);
 	_texture = ResourceManager::GetInstance()->GetTexture("Explosion");
 
@@ -16,11 +17,19 @@ void Explosion::Init()
 	_anim->ChangeAnimation(L"Explosion");
 	_anim->GetAnimation()->CreateAnimation();
 	_anim->SetOwner(this);
+	_anim->GetAnimation()->Init(1);
 }
 
 void Explosion::Update(float deltaTime)
 {
+	GameScene* gameScene = GameScene::GetGameScene();
+	if (gameScene == nullptr)
+		return;
+
 	_anim->Update(deltaTime);
+
+	if (_anim->GetAnimation()->GetReps() == 0)
+		gameScene->DestroyObject(this, LAYER_TYPE::EFFECT);
 }
 
 void Explosion::Render(HDC hdc)

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Enemy.h"
+#include "Enemy2.h"
 #include "Missile.h"
 #include "Player.h"
 #include "InputManager.h"
@@ -8,27 +8,27 @@
 #include "TimerManager.h"
 #include "GameScene.h"
 
-void Enemy::Init(float posX, float posY)
+void Enemy2::Init(float posX, float posY)
 {
 	_pos = Vector(posX, posY);
 	_angle = DegreeToRadian(-90);
-	_texture = ResourceManager::GetInstance()->GetTexture("Enemy1");
+	_texture = ResourceManager::GetInstance()->GetTexture("Enemy2");
 
 	// Colider Init
 	_collider.radius = 20.0f;
 	_collider.offset = POINT(0, 0);
-	
+
 	// 공격 반복 타이머 설정
 	TimerManager::GetInstance()->AddTimer(2.0f, true, [this]() {Attack(); });
 }
 
-void Enemy::Update(float deltaTime)
+void Enemy2::Update(float deltaTime)
 {
 	Move(deltaTime);
-	OnColliderEnter(); // Enter로 구현 못함.. Stay 기능 수행
+	OnColliderEnter();
 }
 
-void Enemy::Render(HDC hdc)
+void Enemy2::Render(HDC hdc)
 {
 	// winAPI 텍스처 그릴때, 위치를 기준으로 텍스처를 그리는데, 이때도 똑같이 _pos 는 중심위치로 생각하면
 	// 로직만들때 편하다.
@@ -37,10 +37,9 @@ void Enemy::Render(HDC hdc)
 		_texture->Render(hdc, _pos);
 	}
 	//::Ellipse(hdc, _pos.x - _collider.radius, _pos.y - _collider.radius, _pos.x + _collider.radius, _pos.y + _collider.radius); // 콜라이더 범위 체크
-
 }
 
-void Enemy::OnColliderEnter()
+void Enemy2::OnColliderEnter()
 {
 	GameScene* gameScene = GameScene::GetGameScene();
 	if (gameScene == nullptr)
@@ -64,13 +63,14 @@ void Enemy::OnColliderEnter()
 
 }
 
-void Enemy::Move(float deltaTime)
+void Enemy2::Move(float deltaTime)
 {
 	_pos.y += _speed * deltaTime;
-	if (_pos.y >= 850.0f) _pos.y = -50.0f;
+
+	if (_pos.y >= 800) _pos.y = -50.0f;
 }
 
-void Enemy::Attack()
+void Enemy2::Attack()
 {
 	GameScene* gameScene = GameScene::GetGameScene();
 	if (gameScene == nullptr)
@@ -79,14 +79,14 @@ void Enemy::Attack()
 	Vector firePos;
 	firePos.x = _pos.x;
 	firePos.y = _pos.y + 30.0f;
-	gameScene->CreateEnemyMissile(LAYER_TYPE::ENEMYMISSILE, firePos, _angle, ENEMY_TYPE::ENEMY1);
+	gameScene->CreateEnemyMissile(LAYER_TYPE::ENEMYMISSILE, firePos, _angle, ENEMY_TYPE::ENEMY2);
 }
 
-void Enemy::OnDamaged()
+void Enemy2::OnDamaged()
 {
 	GameScene* gameScene = GameScene::GetGameScene();
 
 	gameScene->Instantiate(LAYER_TYPE::EFFECT, _pos);
-	
+
 	gameScene->DestroyObject(this, LAYER_TYPE::ENEMY);
 }

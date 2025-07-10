@@ -126,6 +126,15 @@
     <ClInclude Include="Explosion.h">
       <Filter>Object\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy2.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyMissile.h">
+      <Filter>Object\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySpawner.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyShooting.cpp">
@@ -190,6 +199,15 @@
     </ClCompile>
     <ClCompile Include="Explosion.cpp">
       <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy2.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyMissile.cpp">
+      <Filter>Object\Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawner.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

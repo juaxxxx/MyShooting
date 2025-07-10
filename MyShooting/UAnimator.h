@@ -8,7 +8,7 @@ class UAnimator
 {
 public:
 	UAnimator() : _object(nullptr), _texture(nullptr), _curAnim(nullptr), _loop(false) {}
-	~UAnimator() {}; // delete 작업 필요
+	~UAnimator(); // delete 작업 필요
 	void Update(float deltaTime);
 	void Render(HDC hdc);
 

@@ -16,14 +16,19 @@ class UAnimation
 {
 public:
 	UAnimation(wstring name, UAnimator* animator, TextureResource* texture, uint32 totalframecount, uint32 framecount, uint32 totalcount)
-		: _name(name), _animator(animator), _texture(texture), _colCount(totalframecount), _count(framecount), _totalCount(totalcount), _curFrameCount(0), _time(0), _gap(0.05f){ }
+		: _name(name), _animator(animator), _texture(texture), _colCount(totalframecount),
+		_count(framecount), _totalCount(totalcount), _curFrameCount(0), _time(0), _gap(0.05f), _reps(-1), _canLoop(true)
+	{ 
+	}
+
 	~UAnimation() {};
-	void Init();
+	void Init(int32 reps);
 	void Update(float deltaTime);
 	void Render(HDC hdc);
 
 	void CreateAnimation();
 	Vector GetCurFrame();
+	int32 GetReps() const { return _reps; }
 
 private:
 	wstring _name;
@@ -38,4 +43,7 @@ private:
 	//float _duration;
 	float _time;
 	float _gap;
+
+	bool _canLoop;
+	int32 _reps;
 };

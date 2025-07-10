@@ -5,10 +5,13 @@
 class Enemy : public UObject
 {
 public:
+	Enemy() : _speed(100.0f), _angle(90), _FOV(0) {}
+	~Enemy() override {}
 	void Init(float posX, float posY) override;
 	void Update(float deltaTime) override;
 	void Render(HDC hdc) override;
 	void OnColliderEnter() override;
+	void Move(float deltaTime);
 	void Attack();
 	void OnDamaged();
 

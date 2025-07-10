@@ -10,7 +10,9 @@ public:
 	void Init();
 	void Update(float deltaTime);
 	void AddTimer(const float time, bool loop, function<void()> act);
-
+	void TimerUpdate();
 	vector<class Timer*> alarms;
+	vector<class Timer*> newalarms;
+
 };
 

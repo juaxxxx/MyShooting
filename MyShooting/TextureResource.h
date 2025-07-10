@@ -1,7 +1,11 @@
 #pragma once
+
 class TextureResource
 {
 public:
+	TextureResource() {};
+	~TextureResource();
+
 	void Load(wstring fileName);
 
 	// 해당 리소스가 그려지는 부분

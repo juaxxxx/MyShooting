@@ -132,10 +132,20 @@ enum class LAYER_TYPE
 	EFFECT,
 	ENEMY,
 	MISSILE,
+	ENEMYMISSILE,
 	PLAYER,
+	ENEMYSPAWNER,
 	END,
 };
 
+enum class ENEMY_TYPE
+{
+	ENEMY1,
+	ENEMY2,
+	ENEMY3,
+	ENEMY4,
+	NONE,
+};
 
 // Circle Collider Struct
 struct Collider

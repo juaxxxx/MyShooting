@@ -11,7 +11,7 @@
 void Player::Init()
 {
 	// Player 정보 초기화
-	_pos = Vector(100, 100);
+	_pos = Vector(220, 600);
 	_speed = 300.0f;
 	_angle = DegreeToRadian(90);
 	_FOV = DegreeToRadian(60);
@@ -63,7 +63,7 @@ void Player::Update(float deltaTime)
 void Player::Render(HDC hdc)
 {
 	if (_texture) _texture->Render(hdc, _pos);
-	::Ellipse(hdc, _pos.x - _collider.radius, _pos.y - _collider.radius, _pos.x + _collider.radius, _pos.y + _collider.radius); // 콜라이더 범위 체크
+	//::Ellipse(hdc, _pos.x - _collider.radius, _pos.y - _collider.radius, _pos.x + _collider.radius, _pos.y + _collider.radius); // 콜라이더 범위 체크
 }
 
 void Player::OnColliderEnter()
@@ -73,7 +73,7 @@ void Player::OnColliderEnter()
 		return;
 
 	{
-		vector<UObject*> objects = gameScene->GetObjects(LAYER_TYPE::MISSILE);
+		vector<UObject*> objects = gameScene->GetObjects(LAYER_TYPE::ENEMYMISSILE);
 		for (int i = 0; i < objects.size(); i++)
 		{
 			Vector len = objects[i]->GetPos() - _pos;
@@ -82,7 +82,7 @@ void Player::OnColliderEnter()
 				// 충돌 시
 				// 피격 함수 호출
 				OnDamaged();
-				gameScene->RemoveMissile(dynamic_cast<Missile*>(objects[i]));
+				gameScene->DestroyObject(objects[i], LAYER_TYPE::ENEMYMISSILE);
 				break;
 			}
 		}
@@ -92,6 +92,8 @@ void Player::OnColliderEnter()
 void Player::OnDamaged()
 {
 	GameScene* gameScene = GameScene::GetGameScene();
+
+	gameScene->Instantiate(LAYER_TYPE::EFFECT, _pos);
 
 	gameScene->DestroyObject(this, LAYER_TYPE::PLAYER);
 }

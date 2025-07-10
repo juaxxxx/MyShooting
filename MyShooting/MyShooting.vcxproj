@@ -130,6 +130,9 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="EditScene.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Enemy2.h" />
+    <ClInclude Include="EnemyMissile.h" />
+    <ClInclude Include="EnemySpawner.h" />
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
@@ -157,6 +160,9 @@
     <ClCompile Include="Defines.cpp" />
     <ClCompile Include="EditScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Enemy2.cpp" />
+    <ClCompile Include="EnemyMissile.cpp" />
+    <ClCompile Include="EnemySpawner.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameScene.cpp" />

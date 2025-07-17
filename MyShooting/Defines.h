@@ -129,6 +129,7 @@ struct Vector
 enum class LAYER_TYPE
 {
 	BACKGROUND,
+	DEFAULT,
 	EFFECT,
 	ENEMY,
 	MISSILE,

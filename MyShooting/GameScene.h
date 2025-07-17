@@ -2,6 +2,7 @@
 #include "Scene.h"
 
 class UObject;
+class Grid;
 
 class GameScene : public Scene
 {
@@ -12,8 +13,8 @@ public:
 	virtual void Destroy() override;
 	virtual void Update(float deltatTime) override;
 	virtual void Render(HDC hdc) override;
-	void DestroyObject(UObject* object, LAYER_TYPE layer);
-
+	void DestroyObject();
+	void reserveDestroy(UObject* object);
 	static GameScene* GetGameScene();
 
 public:
@@ -26,10 +27,12 @@ public:
 
 	vector<UObject*> GetObjects(LAYER_TYPE layerType) { return _objects[(uint32)layerType]; }
 	UObject* GetPlayer();
-	
+	Grid* GetGrid() { return _gameGrid; }
 
 private:
 	// 게임 안 객체 관리
 	vector<UObject*> _objects[(uint32)LAYER_TYPE::END];
+	vector<UObject*> _reserveobjects;
+	Grid* _gameGrid = nullptr;
 };
 

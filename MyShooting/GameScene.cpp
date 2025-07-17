@@ -10,6 +10,7 @@
 #include "BackGround.h"
 #include "Explosion.h"
 #include "EnemySpawner.h"
+#include "Grid.h"
 
 GameScene::~GameScene()
 {
@@ -19,8 +20,11 @@ GameScene::~GameScene()
 void GameScene::Init()
 {
 	{
+		_gameGrid = new Grid();
+	}
+	{
 		Player* object = new Player();
-		object->Init();
+		object->Init(_gameGrid);
 		_objects[(uint32)LAYER_TYPE::PLAYER].push_back(object);
 	}
 	{
@@ -51,6 +55,7 @@ void GameScene::Destroy()
 		}
 		_objects[i].clear();
 	}
+	SAFE_DELETE(_gameGrid);
 }
 
 void GameScene::Update(float deltaTime)
@@ -65,10 +70,13 @@ void GameScene::Update(float deltaTime)
 			}
 		}
 	}
+	_gameGrid->Update();
+	DestroyObject();
 }
 
 void GameScene::Render(HDC hdc)
 {
+
 	for (int i = 0; i < (uint32)LAYER_TYPE::END; i++)
 	{
 		for (int j = 0; j < _objects[i].size(); j++)
@@ -79,7 +87,7 @@ void GameScene::Render(HDC hdc)
 			}
 		}
 	}
-
+	_gameGrid->Render(hdc);
 }
 
 void GameScene::Instantiate(LAYER_TYPE type, Vector pos)
@@ -124,6 +132,7 @@ void GameScene::Instantiate(ENEMY_TYPE type, Vector pos)
 	{
 		Enemy* object = new Enemy();
 		object->Init(pos.x, pos.y);
+		object->Init(_gameGrid);
 		_objects[(uint32)LAYER_TYPE::ENEMY].push_back(object);
 		break;
 	}
@@ -137,21 +146,33 @@ void GameScene::Instantiate(ENEMY_TYPE type, Vector pos)
 	}
 }
 
-void GameScene::DestroyObject(UObject* object, LAYER_TYPE layer)
+void GameScene::DestroyObject()
 {
-	for (auto iter = _objects[(uint32)layer].begin(); iter != _objects[(uint32)layer].end();)
+	for (auto iter = _reserveobjects.begin(); iter != _reserveobjects.end(); iter++)
 	{
-		if (*iter == object)
+		if ((*iter)->GetLayerType() == LAYER_TYPE::ENEMY)
 		{
-			SAFE_DELETE(*iter);
-			_objects[(uint32)layer].erase(iter);
-			return;
+			auto obj = find(_objects[(int32)LAYER_TYPE::ENEMY].begin(), _objects[(int32)LAYER_TYPE::ENEMY].end(), (*iter));
+
+			SAFE_DELETE(*obj);
+			_objects[(int32)LAYER_TYPE::ENEMY].erase(obj);
 		}
-		else
+
+		if ((*iter)->GetLayerType() == LAYER_TYPE::MISSILE)
 		{
-			iter++;
+			auto obj = find(_objects[(int32)LAYER_TYPE::MISSILE].begin(), _objects[(int32)LAYER_TYPE::MISSILE].end(), (*iter));
+
+			SAFE_DELETE(*obj);
+			_objects[(int32)LAYER_TYPE::MISSILE].erase(obj);
 		}
 	}
+
+	_reserveobjects.clear();
+}
+
+void GameScene::reserveDestroy(UObject* object)
+{
+	_reserveobjects.push_back(object);
 }
 
 GameScene* GameScene::GetGameScene()
@@ -170,18 +191,14 @@ void GameScene::CreateMissile(float posX, float posY, float angle, bool chase)
 {
 	Missile* missile = new Missile();
 	missile->Init(posX, posY, angle, chase);
+	missile->Init(_gameGrid);
 	_objects[(uint32)LAYER_TYPE::MISSILE].push_back(missile);
 }
 
 void GameScene::RemoveMissile(Missile* missile)
 {
-	auto it = std::find(_objects[(uint32)LAYER_TYPE::MISSILE].begin(), _objects[(uint32)LAYER_TYPE::MISSILE].end(), missile);
-	_objects[(uint32)LAYER_TYPE::MISSILE].erase(it);
-
-	// 객체도 소멸한다.
-	// 객체의 생성과 소멸은 모두 Game이라는 매니저가 총괄
-	// 이 코드는 괜찮을까요? 위험한 코드를 만들어야 하네.... 나중에 한번 고민해보자.TODO
-	delete missile;
+	missile->SetActive(false);
+	reserveDestroy(missile);
 }
 
 UObject* GameScene::GetPlayer()

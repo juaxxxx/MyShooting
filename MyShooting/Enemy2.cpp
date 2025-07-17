@@ -19,7 +19,7 @@ void Enemy2::Init(float posX, float posY)
 	_collider.offset = POINT(0, 0);
 
 	// 공격 반복 타이머 설정
-	TimerManager::GetInstance()->AddTimer(2.0f, true, [this]() {Attack(); });
+	TimerManager::GetInstance()->AddTimer(10.0f, true, [this]() {Attack(); });
 }
 
 void Enemy2::Update(float deltaTime)
@@ -88,5 +88,5 @@ void Enemy2::OnDamaged()
 
 	gameScene->Instantiate(LAYER_TYPE::EFFECT, _pos);
 
-	gameScene->DestroyObject(this, LAYER_TYPE::ENEMY);
+	gameScene->reserveDestroy(this);
 }

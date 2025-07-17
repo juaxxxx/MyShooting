@@ -30,9 +30,11 @@ void EnemySpawner::SpawnSetUp()
 {
 
 	uint32 randPosX = rand() % 400 + 30; // 30 ~ 430
-	uint32 randPosY = rand() % 100 - 100; // -100 ~ 0
+	uint32 randPosY = rand() % 100; // -100 ~ 0
 	uint32 randfreq = rand() % 3 + 5;
-	ENEMY_TYPE type = (ENEMY_TYPE)(rand() % 2);
+	//ENEMY_TYPE type = (ENEMY_TYPE)(rand() % 2);
+	ENEMY_TYPE type = ENEMY_TYPE::ENEMY1;
+
 	TimerManager::GetInstance()->AddTimer(randfreq, true, [this, randPosX, randPosY, type]() {SpawnEnemy(Vector(randPosX, randPosY), type); });
 }
 

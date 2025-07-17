@@ -10,7 +10,7 @@ public:
 	void Init(float posX, float posY) override;
 	void Update(float deltaTime) override;
 	void Render(HDC hdc) override;
-	void OnColliderEnter() override;
+	void OnColliderEnter();
 	void Move(float deltaTime);
 	void Attack();
 	void OnDamaged();

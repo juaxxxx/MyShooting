@@ -7,15 +7,24 @@
 #include "GameScene.h"
 #include "TextureResource.h"
 #include "ResourceManager.h"
+#include "Grid.h"
 
-void Player::Init()
+void Player::Init(Grid* grid)
 {
 	// Player 정보 초기화
+	_grid = grid;
 	_pos = Vector(220, 600);
+	_gridpreX = PosToIndex(_pos.x);
+	_gridpreY = PosToIndex(_pos.y);
+	_gridX = PosToIndex(_pos.x);
+	_gridY = PosToIndex(_pos.y);
+	
 	_speed = 300.0f;
 	_angle = DegreeToRadian(90);
 	_FOV = DegreeToRadian(60);
 	_hp = 3;
+	_layer = LAYER_TYPE::PLAYER;
+
 	// Colider Init
 	_collider.radius = 10.0f;
 	_collider.offset = POINT(0, 0);
@@ -57,11 +66,56 @@ void Player::Update(float deltaTime)
 		gameScene->CreateMissile(firePos.x, firePos.y, _angle, false);
 	}
 
-	OnColliderEnter();
+	_gridX = PosToIndex(_pos.x);
+	_gridY = PosToIndex(_pos.y);
+	_grid->Move(this);
 }
 
 void Player::Render(HDC hdc)
 {
+	// 펜 생성
+	HPEN myPen = CreatePen(PS_SOLID, 3, RGB(0, 255, 255));
+	HPEN oldPen = (HPEN)SelectObject(hdc, myPen);
+	int32 cellX = _gridX;
+	int32 cellY = _gridY;
+
+
+	// 라인 그리기
+	MoveToEx(hdc, (cellX - 1) * Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE, nullptr);
+	LineTo(hdc, (cellX - 1) * Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE);
+
+	// 라인 그리기
+	MoveToEx(hdc, (cellX) * Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE, nullptr);
+	LineTo(hdc, (cellX) * Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE);
+
+	// 라인 그리기
+	MoveToEx(hdc, (cellX + 1)*Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE, nullptr);
+	LineTo(hdc, (cellX + 1)*Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE);
+
+	// 라인 그리기
+	MoveToEx(hdc, (cellX + 2) * Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE, nullptr);
+	LineTo(hdc, (cellX + 2) * Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE);
+
+	// 라인 그리기
+	MoveToEx(hdc, (cellX - 1)*Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE, nullptr);
+	LineTo(hdc, (cellX + 2)*Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE);
+
+	// 라인 그리기
+	MoveToEx(hdc, (cellX - 1) * Grid::CELL_SIZE, (cellY) * Grid::CELL_SIZE, nullptr);
+	LineTo(hdc, (cellX + 2) * Grid::CELL_SIZE, (cellY) * Grid::CELL_SIZE);
+
+	// 라인 그리기
+	MoveToEx(hdc, (cellX - 1) * Grid::CELL_SIZE, (cellY + 1) * Grid::CELL_SIZE, nullptr);
+	LineTo(hdc, (cellX + 2) * Grid::CELL_SIZE, (cellY + 1) * Grid::CELL_SIZE);
+
+	// 라인 그리기
+	MoveToEx(hdc, (cellX - 1) * Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE, nullptr);
+	LineTo(hdc, (cellX + 2) * Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE);
+
+	// 이전 펜 복원 및 새 펜 삭제
+	SelectObject(hdc, oldPen);
+	DeleteObject(myPen);
+
 	if (_texture) _texture->Render(hdc, _pos);
 	//::Ellipse(hdc, _pos.x - _collider.radius, _pos.y - _collider.radius, _pos.x + _collider.radius, _pos.y + _collider.radius); // 콜라이더 범위 체크
 }
@@ -82,12 +136,27 @@ void Player::OnColliderEnter()
 				// 충돌 시
 				// 피격 함수 호출
 				OnDamaged();
-				gameScene->DestroyObject(objects[i], LAYER_TYPE::ENEMYMISSILE);
+				gameScene->reserveDestroy(this);
 				break;
 			}
 		}
 	}
 }
+
+void Player::OnColliderEnter(UObject* other)
+{
+	GameScene* gameScene = GameScene::GetGameScene();
+	if (gameScene == nullptr)
+		return;
+
+	{
+		if (other->GetLayerType() == LAYER_TYPE::MISSILE)
+		{
+
+		}
+	}
+}
+
 
 void Player::OnDamaged()
 {
@@ -98,7 +167,7 @@ void Player::OnDamaged()
 	_hp--;
 
 	if (_hp <= 0)
-		gameScene->DestroyObject(this, LAYER_TYPE::PLAYER);
+		gameScene->reserveDestroy(this);
 }
 
 Vector Player::GetForwardVector()

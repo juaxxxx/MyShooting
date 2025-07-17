@@ -31,7 +31,7 @@ void EnemyMissile::Update(float deltaTime)
 	// 화면 밖을 벗어났는지 확인후 소멸
 	if (_pos.x < 0 || _pos.x >= GWinSizeX || _pos.y < 0 || _pos.y >= GWinSizeY)
 	{
-		gameScene->DestroyObject(this, LAYER_TYPE::ENEMYMISSILE);
+		gameScene->reserveDestroy(this);
 		return;
 	}
 

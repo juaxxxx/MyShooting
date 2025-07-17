@@ -5,18 +5,33 @@
 #include "GameScene.h"
 #include "TextureResource.h"
 #include "ResourceManager.h"
+#include "Grid.h"
+
+Missile::~Missile()
+{
+}
 
 void Missile::Init(float posX, float posY, float angle, bool chase)
 { 
 	_pos = Vector(posX, posY);
 	_angle = angle;
 	_chase = chase;
+	_layer = LAYER_TYPE::MISSILE;
 
 	// Colider Init
 	_collider.radius = 5.0f;
 	_collider.offset = POINT(0, 0);
 	
 	_texture = ResourceManager::GetInstance()->GetTexture("PlayerMISSILE");
+}
+
+void Missile::Init(Grid* grid)
+{
+	_grid = grid;
+	_gridpreX = PosToIndex(_pos.x);
+	_gridpreY = PosToIndex(_pos.y);
+	_gridX = PosToIndex(_pos.x);
+	_gridY = PosToIndex(_pos.y);
 }
 
 void Missile::Update(float deltaTime)
@@ -38,7 +53,9 @@ void Missile::Update(float deltaTime)
 		return;
 	}
 
-	// 다양한 업데이트가 있을수도 있지만.
+	_gridX = PosToIndex(_pos.x);
+	_gridY = PosToIndex(_pos.y);
+	_grid->Move(this);
 }
 
 void Missile::Render(HDC hdc)

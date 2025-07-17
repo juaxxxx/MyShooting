@@ -5,12 +5,13 @@
 class Player : public UObject
 {
 public:
-	Player() {}
+	Player() { }
 	~Player() override {}
-	void Init() override;
+	void Init(Grid* grid) override;
 	void Update(float deltaTime) override;
 	void Render(HDC hdc) override;
-	void OnColliderEnter() override;
+	void OnColliderEnter(UObject* other) override;
+	void OnColliderEnter();
 	void OnDamaged();
 
 	Vector GetForwardVector();

@@ -29,7 +29,7 @@ void Explosion::Update(float deltaTime)
 	_anim->Update(deltaTime);
 
 	if (_anim->GetAnimation()->GetReps() == 0)
-		gameScene->DestroyObject(this, LAYER_TYPE::EFFECT);
+		gameScene->reserveDestroy(this);
 }
 
 void Explosion::Render(HDC hdc)

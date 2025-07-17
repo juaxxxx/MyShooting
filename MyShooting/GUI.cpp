@@ -14,7 +14,7 @@ void GUI::Init()
 	_hpHeart = new HpHeart();
 	_hpHeart->Init(70, 780);
 	_gameoverText = new GameOverText();
-	_gameoverText->Init(220, 400);
+	_gameoverText->Init(180, 400);
 }
 
 void GUI::Render(HDC hdc)

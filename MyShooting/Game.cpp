@@ -5,6 +5,7 @@
 #include "TimerManager.h"
 #include "ResourceManager.h"
 #include "UIManager.h"
+#include "DataManager.h"
 
 #include "GameScene.h"
 #include "EditScene.h"
@@ -45,6 +46,7 @@ void Game::Init(HWND hwnd)
 	ResourceManager::GetInstance()->Init();
 	TimerManager::GetInstance()->Init();
 	UIManager::GetInstance()->Init();
+	DataManager::GetInstance()->Init();
 
 	// 시작씬은 게임으로 설정
 	_currScene = new GameScene();
@@ -64,6 +66,7 @@ void Game::Destroy()
 	TimerManager::DestroyInstance();
 	ResourceManager::GetInstance()->Destroy();
 	UIManager::GetInstance()->DestroyInstance();
+	DataManager::GetInstance()->Destroy();
 
 	if (_currScene)
 	{

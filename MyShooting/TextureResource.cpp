@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TextureResource.h"
 #include "Game.h"
+#include "Camera.h"
 
 TextureResource::~TextureResource()
 {
@@ -73,11 +74,15 @@ void TextureResource::Load(wstring fileName)
 
 void TextureResource::Render(HDC hdc, Vector pos)
 {
+	// 카메라 기준으로 좌표 변환을 해준다.
+
+	Vector screenPos = Camera::ConvertScreenPos(pos);
+
 	if (_transparent == -1)
 	{
 		::BitBlt(hdc,	// 백버퍼에
-			(int32)pos.x - (_sizeX / 2),	// 텍스처를 중심좌표로 그리기위해 size의 절반만큼 빼준다.
-			(int32)pos.y - (_sizeY / 2),
+			(int32)screenPos.x - (_sizeX / 2),	// 텍스처를 중심좌표로 그리기위해 size의 절반만큼 빼준다.
+			(int32)screenPos.y - (_sizeY / 2),
 			_sizeX,
 			_sizeY,
 			_textureHdc,	// 텍스쳐 그리기
@@ -88,8 +93,8 @@ void TextureResource::Render(HDC hdc, Vector pos)
 	else
 	{
 		::TransparentBlt(hdc,
-			(int32)pos.x - (_sizeX / 2),
-			(int32)pos.y - (_sizeY / 2),
+			(int32)screenPos.x - (_sizeX / 2),
+			(int32)screenPos.y - (_sizeY / 2),
 			_sizeX,
 			_sizeY,
 			_textureHdc,
@@ -103,9 +108,13 @@ void TextureResource::Render(HDC hdc, Vector pos)
 
 void TextureResource::Render(HDC hdc, Vector pos, Vector frame, Vector size)
 {
+	// 카메라 기준으로 좌표 변환을 해준다.
+
+	Vector screenPos = Camera::ConvertScreenPos(pos);
+
 	::BitBlt(hdc,	// 백버퍼에
-		(int32)pos.x - (size.x / 2),	// 텍스처를 중심좌표로 그리기위해 size의 절반만큼 빼준다.
-		(int32)pos.y - (size.y / 2),
+		(int32)screenPos.x - (size.x / 2),	// 텍스처를 중심좌표로 그리기위해 size의 절반만큼 빼준다.
+		(int32)screenPos.y - (size.y / 2),
 		size.x,
 		size.y,
 		_textureHdc,	// 텍스쳐 그리기

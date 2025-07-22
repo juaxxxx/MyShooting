@@ -14,5 +14,9 @@ public:
 	virtual void OnColliderEnter(LAYER_TYPE otherType, function<void()> act) {};
 
 	virtual void Instantiate(LAYER_TYPE type, Vector pos) {};
+
+protected:
+	virtual void loadResource() {}
+
 };
 

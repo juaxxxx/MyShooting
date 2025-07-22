@@ -8,6 +8,7 @@ public:
 	EnemyMissile() {}
 	~EnemyMissile() override {}
 	void Init(float posX, float posY, float angle, ENEMY_TYPE type) override;
+	void Init(Grid* grid);
 	void Update(float deltaTime) override;
 	void Render(HDC hdc) override;
 

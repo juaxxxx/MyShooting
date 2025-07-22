@@ -15,8 +15,18 @@ void EnemyMissile::Init(float posX, float posY, float angle, ENEMY_TYPE type)
 	// Colider Init
 	_collider.radius = 5.0f;
 	_collider.offset = POINT(0, 0);
+	_layer = LAYER_TYPE::ENEMYMISSILE;
 
-	_texture = ResourceManager::GetInstance()->GetTexture("EnemyMISSILE");
+	_texture = ResourceManager::GetInstance()->GetTexture("EnemyBullet");
+}
+
+void EnemyMissile::Init(Grid* grid)
+{
+	_grid = grid;
+	_gridpreX = PosToIndex(_pos.x);
+	_gridpreY = PosToIndex(_pos.y);
+	_gridX = PosToIndex(_pos.x);
+	_gridY = PosToIndex(_pos.y);
 }
 
 void EnemyMissile::Update(float deltaTime)
@@ -35,6 +45,9 @@ void EnemyMissile::Update(float deltaTime)
 		return;
 	}
 
+	_gridX = PosToIndex(_pos.x);
+	_gridY = PosToIndex(_pos.y);
+	_grid->Move(this);
 }
 
 void EnemyMissile::Render(HDC hdc)

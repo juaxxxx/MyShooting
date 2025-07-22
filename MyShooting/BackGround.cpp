@@ -15,7 +15,7 @@ void Background::Init(float posX, float posY)
 	_collider.radius = 0;
 	_collider.offset = POINT(0, 0);
 
-	_texture = ResourceManager::GetInstance()->GetTexture("BackGround");
+	_texture = ResourceManager::GetInstance()->GetTexture("BG");
 }
 
 void Background::Update(float deltaTime)

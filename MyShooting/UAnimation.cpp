@@ -4,6 +4,7 @@
 #include "ResourceManager.h"
 #include "TextureResource.h"
 #include "UObject.h"
+#include "ObjectPool.h"
 
 void UAnimation::CreateAnimation()
 {

@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "ObjectPool.h"
 
 class UObject;
 class Grid;
@@ -24,15 +25,23 @@ public:
 	void CreateMissile(float posX, float posY, float angle, bool chase);
 
 	void RemoveMissile(class Missile* missile);
+	void RemoveMissile(class EnemyMissile* missile);
 
 	vector<UObject*> GetObjects(LAYER_TYPE layerType) { return _objects[(uint32)layerType]; }
 	UObject* GetPlayer();
 	Grid* GetGrid() { return _gameGrid; }
+
+protected:
+	virtual void loadResource();
+
 
 private:
 	// 게임 안 객체 관리
 	vector<UObject*> _objects[(uint32)LAYER_TYPE::END];
 	vector<UObject*> _reserveobjects;
 	Grid* _gameGrid = nullptr;
+
+	ObjectPool _PlayerMissilePool;
+	ObjectPool _EnemyMissilePool;
 };
 

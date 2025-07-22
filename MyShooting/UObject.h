@@ -27,7 +27,8 @@ public:
 	Vector GetScael() { return _scale; }
 	Collider GetCollider() { return _collider; }
 	LAYER_TYPE GetLayerType() { return _layer; }
-	int32 PosToIndex(float pos) { return (int32)(pos / Grid::CELL_SIZE); }
+	int32 PosToIndex(float pos);
+	int32 PosToIndex(float pos, bool IsX);
 	void SetActive(bool active) { _active = active; }
 	bool GetActive() { return _active; }
 

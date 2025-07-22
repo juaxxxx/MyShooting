@@ -22,7 +22,7 @@ void Missile::Init(float posX, float posY, float angle, bool chase)
 	_collider.radius = 5.0f;
 	_collider.offset = POINT(0, 0);
 	
-	_texture = ResourceManager::GetInstance()->GetTexture("PlayerMISSILE");
+	_texture = ResourceManager::GetInstance()->GetTexture("PlayerBullet");
 }
 
 void Missile::Init(Grid* grid)

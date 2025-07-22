@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Grid.h"
 #include "UObject.h"
+#include "Camera.h"
 
 void Grid::Update()
 {
@@ -59,15 +60,17 @@ void Grid::Render(HDC hdc)
 	for (int x = 0; x < ROW_NUM_CELL; x++)
 	{
 		// 라인 그리기
-		MoveToEx(hdc, x * Grid::CELL_SIZE, 0, nullptr);
-		LineTo(hdc, x * Grid::CELL_SIZE, 800);
+		Vector convertPos = Camera::ConvertScreenPos(Vector(x, 0));
+		MoveToEx(hdc, convertPos.x + x * Grid::CELL_SIZE, 0, nullptr);
+		LineTo(hdc, convertPos.x + x * Grid::CELL_SIZE, 9700);
 	}
 
 	for (int y = 0; y < COL_NUM_CELL; y++)
 	{
 		// 라인 그리기
-		MoveToEx(hdc, 0, y * Grid::CELL_SIZE, nullptr);
-		LineTo(hdc, 450, y * Grid::CELL_SIZE);
+		Vector convertPos = Camera::ConvertScreenPos(Vector(0, y));
+		MoveToEx(hdc, 0, convertPos.y + y * Grid::CELL_SIZE, nullptr);
+		LineTo(hdc, 800, convertPos.y + y * Grid::CELL_SIZE);
 	}
 
 

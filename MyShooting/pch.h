@@ -5,6 +5,8 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <stack>
+#include <queue>
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
@@ -17,6 +19,13 @@
 #include <filesystem>
 #include <fstream>
 namespace fs = std::filesystem;
+
+// Json
+#include "Json/nlohmann/json.hpp" // nlohmann/json 헤더 파일
+using json = nlohmann::json;
+
+// magic_enum
+#include "magic_enum/magic_enum.hpp"
 
 // transparent Blt
 #pragma comment(lib, "msimg32.lib")

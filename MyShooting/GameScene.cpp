@@ -11,6 +11,11 @@
 #include "Explosion.h"
 #include "EnemySpawner.h"
 #include "Grid.h"
+#include "ResourceData.h"
+#include "DataManager.h"
+#include "ResourceManager.h"
+#include "Camera.h"
+#include "FixedMap.h"
 
 GameScene::~GameScene()
 {
@@ -19,6 +24,8 @@ GameScene::~GameScene()
 
 void GameScene::Init()
 {
+	loadResource();
+
 	{
 		_gameGrid = new Grid();
 	}
@@ -33,16 +40,26 @@ void GameScene::Init()
 		_objects[(uint32)LAYER_TYPE::ENEMYSPAWNER].push_back(object);
 	}
 	// 배경 생성
+	//{
+	//	Background* object = new Background();
+	//	object->Init(GWinSizeX / 2, 400.0f);
+	//	_objects[(uint32)LAYER_TYPE::BACKGROUND].push_back(object);
+	//}
+	//{
+	//	Background* object = new Background();
+	//	object->Init(GWinSizeX / 2, -400.0f);
+	//	_objects[(uint32)LAYER_TYPE::BACKGROUND].push_back(object);
+	//}
 	{
-		Background* object = new Background();
-		object->Init(GWinSizeX / 2, 400.0f);
+		FixedMap* object = new FixedMap();
+		object->Init(400, 4850);
 		_objects[(uint32)LAYER_TYPE::BACKGROUND].push_back(object);
 	}
-	{
-		Background* object = new Background();
-		object->Init(GWinSizeX / 2, -400.0f);
-		_objects[(uint32)LAYER_TYPE::BACKGROUND].push_back(object);
-	}
+
+	_PlayerMissilePool.Init<Missile>(50);
+	_EnemyMissilePool.Init<EnemyMissile>(50);
+
+
 }
 
 void GameScene::Destroy()
@@ -56,6 +73,9 @@ void GameScene::Destroy()
 		_objects[i].clear();
 	}
 	SAFE_DELETE(_gameGrid);
+
+	_PlayerMissilePool.Clear();
+	_EnemyMissilePool.Clear();
 }
 
 void GameScene::Update(float deltaTime)
@@ -70,6 +90,13 @@ void GameScene::Update(float deltaTime)
 			}
 		}
 	}
+	if (_objects[(uint32)LAYER_TYPE::PLAYER].size() != 0)
+	{
+		Vector playerPos = GetPlayer()->GetPos();
+		Vector mapSize(800, 9700);
+		Camera::Update(playerPos, mapSize);
+	}
+	
 	_gameGrid->Update();
 	DestroyObject();
 }
@@ -101,7 +128,7 @@ void GameScene::Instantiate(LAYER_TYPE type, Vector pos)
 	{
 		Explosion* object = new Explosion();
 		object->Init(pos.x, pos.y);
-		_objects[(uint32)LAYER_TYPE::ENEMY].push_back(object);
+		_objects[(uint32)LAYER_TYPE::EFFECT].push_back(object);
 		break;
 	}
 	case LAYER_TYPE::ENEMY:
@@ -150,6 +177,14 @@ void GameScene::DestroyObject()
 {
 	for (auto iter = _reserveobjects.begin(); iter != _reserveobjects.end(); iter++)
 	{
+		if ((*iter)->GetLayerType() == LAYER_TYPE::PLAYER)
+		{
+			auto obj = find(_objects[(int32)LAYER_TYPE::PLAYER].begin(), _objects[(int32)LAYER_TYPE::PLAYER].end(), (*iter));
+
+			SAFE_DELETE(*obj);
+			_objects[(int32)LAYER_TYPE::PLAYER].erase(obj);
+		}
+
 		if ((*iter)->GetLayerType() == LAYER_TYPE::ENEMY)
 		{
 			auto obj = find(_objects[(int32)LAYER_TYPE::ENEMY].begin(), _objects[(int32)LAYER_TYPE::ENEMY].end(), (*iter));
@@ -162,8 +197,17 @@ void GameScene::DestroyObject()
 		{
 			auto obj = find(_objects[(int32)LAYER_TYPE::MISSILE].begin(), _objects[(int32)LAYER_TYPE::MISSILE].end(), (*iter));
 
-			SAFE_DELETE(*obj);
+			//SAFE_DELETE(*obj);
+			_PlayerMissilePool.Return(*obj);
 			_objects[(int32)LAYER_TYPE::MISSILE].erase(obj);
+		}
+		if ((*iter)->GetLayerType() == LAYER_TYPE::ENEMYMISSILE)
+		{
+			auto obj = find(_objects[(int32)LAYER_TYPE::ENEMYMISSILE].begin(), _objects[(int32)LAYER_TYPE::ENEMYMISSILE].end(), (*iter));
+
+			//SAFE_DELETE(*obj);
+			_EnemyMissilePool.Return(*obj);
+			_objects[(int32)LAYER_TYPE::ENEMYMISSILE].erase(obj);
 		}
 	}
 
@@ -182,16 +226,19 @@ GameScene* GameScene::GetGameScene()
 
 void GameScene::CreateEnemyMissile(LAYER_TYPE type, Vector pos, float angle, ENEMY_TYPE enemytype)
 {
-	EnemyMissile* missile = new EnemyMissile();
+	EnemyMissile* missile = _EnemyMissilePool.Acquire<EnemyMissile>();
 	missile->Init(pos.x, pos.y, angle, enemytype);
+	missile->Init(_gameGrid);
+	missile->SetActive(true);
 	_objects[(uint32)LAYER_TYPE::ENEMYMISSILE].push_back(missile);
 }
 
 void GameScene::CreateMissile(float posX, float posY, float angle, bool chase)
 {
-	Missile* missile = new Missile();
+	Missile* missile = _PlayerMissilePool.Acquire<Missile>();
 	missile->Init(posX, posY, angle, chase);
 	missile->Init(_gameGrid);
+	missile->SetActive(true);
 	_objects[(uint32)LAYER_TYPE::MISSILE].push_back(missile);
 }
 
@@ -201,8 +248,29 @@ void GameScene::RemoveMissile(Missile* missile)
 	reserveDestroy(missile);
 }
 
+void GameScene::RemoveMissile(EnemyMissile* missile)
+{
+	missile->SetActive(false);
+	reserveDestroy(missile);
+}
+
 UObject* GameScene::GetPlayer()
 {
 	if (_objects[(uint32)LAYER_TYPE::PLAYER].size() == 0) return nullptr;
 	else return _objects[(uint32)LAYER_TYPE::PLAYER][0];
+}
+
+void GameScene::loadResource()
+{
+	// 데이터로 로드한 모든 텍스쳐들을 로딩한다.
+	const ResourceData* resourceData = DataManager::GetInstance()->GetData<ResourceData>(ResourceData::Key());
+	if (resourceData == nullptr)
+		return;
+
+	for (auto iter : resourceData->_gameSceneData)
+	{
+		const ResourceData::Item* item = iter.second;
+
+		ResourceManager::GetInstance()->LoadTexture(item->key, item->fileName, item->transparent, item->countX, item->countY);
+	}
 }

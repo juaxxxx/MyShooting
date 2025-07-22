@@ -58,6 +58,12 @@
     <Filter Include="UI\GUI">
       <UniqueIdentifier>{0d76ddd4-ce3e-4aac-babd-27d70259b66c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Grid">
+      <UniqueIdentifier>{b061c6a0-3893-48ba-9c30-71f778e404ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{98c0d566-53e7-4153-9c5a-6ff4c93541bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -157,7 +163,25 @@
       <Filter>UI\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManager.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="DataObject.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceData.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="FixedMap.h">
+      <Filter>Object\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -246,7 +270,25 @@
       <Filter>UI\GUI</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPool.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="DataObject.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceData.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="FixedMap.cpp">
+      <Filter>Object\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@ public:
 	void OnColliderEnter(UObject* other) override;
 	void OnColliderEnter();
 	void OnDamaged();
+	void ClampPlayerPos();
 
 	Vector GetForwardVector();
 	uint32 GetHp() const { return _hp; }

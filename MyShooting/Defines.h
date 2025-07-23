@@ -1,7 +1,7 @@
 #pragma once
 
 //  우리가 정의하는 공용 선언들.
-constexpr int GWinSizeX = 450;
+constexpr int GWinSizeX = 600;
 constexpr int GWinSizeY = 800;
 
 // 엔씨에 있을때 사용하던 방식 & 언리얼도 이렇게 씁니다.

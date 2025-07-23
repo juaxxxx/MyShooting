@@ -11,7 +11,5 @@ public:
 	void Update(float deltaTime) override;
 	void Render(HDC hdc) override;
 
-private:
-	float _speed;
 };
 

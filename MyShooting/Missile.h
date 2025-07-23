@@ -14,7 +14,7 @@ public:
 
 
 private:
-	float _speed = 400;
+	float _speed;
 	float _angle = 0;
 	bool _chase = false;
 };

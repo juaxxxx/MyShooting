@@ -21,7 +21,7 @@ void Player::Init(Grid* grid)
 	_gridX = PosToIndex(_pos.x);
 	_gridY = PosToIndex(_pos.y);
 	
-	_speed = 300.0f;
+	_speed = 500.0f;
 	_angle = DegreeToRadian(90);
 	_FOV = DegreeToRadian(60);
 	_hp = 3;
@@ -67,7 +67,8 @@ void Player::Update(float deltaTime)
 
 		gameScene->CreateMissile(firePos.x, firePos.y, _angle, false);
 	}
-
+	
+	ClampPlayerPos();
 
 	_gridX = PosToIndex(_pos.x);
 	_gridY = PosToIndex(_pos.y);
@@ -117,7 +118,7 @@ void Player::Render(HDC hdc)
 	if (_texture) _texture->Render(hdc, _pos);
 	//::Ellipse(hdc, _pos.x - _collider.radius, _pos.y - _collider.radius, _pos.x + _collider.radius, _pos.y + _collider.radius); // 콜라이더 범위 체크
 }
-
+ 
 void Player::OnColliderEnter()
 {
 	GameScene* gameScene = GameScene::GetGameScene();
@@ -173,6 +174,17 @@ void Player::OnDamaged()
 
 	if (_hp <= 0)
 		gameScene->reserveDestroy(this);
+}
+
+void Player::ClampPlayerPos()
+{
+
+	float halfSizeX = GWinSizeX / 2;
+	float halfSizeY = GWinSizeY / 2;
+	float gap = 10.f;
+	Vector cameraPos = Camera::GetCameraPos();
+	_pos.x = clamp(_pos.x, cameraPos.x - halfSizeX + gap, cameraPos.x + halfSizeX - gap);
+	_pos.y = clamp(_pos.y, cameraPos.y - halfSizeY + gap, cameraPos.y + halfSizeY - gap);
 }
 
 Vector Player::GetForwardVector()

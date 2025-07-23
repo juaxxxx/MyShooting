@@ -16,6 +16,7 @@ void Missile::Init(float posX, float posY, float angle, bool chase)
 { 
 	_pos = Vector(posX, posY);
 	_angle = angle;
+	_speed = 1000.f;
 	_chase = chase;
 	_layer = LAYER_TYPE::MISSILE;
 

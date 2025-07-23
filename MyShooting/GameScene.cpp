@@ -56,9 +56,10 @@ void GameScene::Init()
 		_objects[(uint32)LAYER_TYPE::BACKGROUND].push_back(object);
 	}
 
+	Camera::SetCameraPos(GetPlayer()->GetPos());
+
 	_PlayerMissilePool.Init<Missile>(50);
 	_EnemyMissilePool.Init<EnemyMissile>(50);
-
 
 }
 
@@ -94,7 +95,7 @@ void GameScene::Update(float deltaTime)
 	{
 		Vector playerPos = GetPlayer()->GetPos();
 		Vector mapSize(800, 9700);
-		Camera::Update(playerPos, mapSize);
+		Camera::Update(playerPos, mapSize, deltaTime);
 	}
 	
 	_gameGrid->Update();

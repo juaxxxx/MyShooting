@@ -29,7 +29,7 @@ void EnemySpawner::Update(float deltaTime)
 void EnemySpawner::SpawnSetUp()
 {
 
-	uint32 randPosX = rand() % 400 + 30; // 30 ~ 430
+	uint32 randPosX = rand() % 500 + 100; // 100 ~ 600
 	uint32 randPosY = rand() % 100; // -100 ~ 0
 	uint32 randfreq = rand() % 3 + 5;
 	//ENEMY_TYPE type = (ENEMY_TYPE)(rand() % 2);

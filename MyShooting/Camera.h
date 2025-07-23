@@ -7,7 +7,7 @@
 class Camera
 {
 public:
-	static void Update(Vector playerPos, Vector mapSize);
+	static void Update(Vector playerPos, Vector mapSize, float deltaTime);
 	static Vector ConvertScreenPos(Vector worldPos);
 
 	static void SetCameraPos(Vector pos) { _cameraPos = pos; }
@@ -16,5 +16,6 @@ public:
 	
 private:
 	static Vector _cameraPos;
+	static float _speed;
 };
 

@@ -2,17 +2,18 @@
 #include "Camera.h"
 
 Vector Camera::_cameraPos = Vector(0, 0);
+float Camera::_speed = 30.f;
 
-void Camera::Update(Vector playerPos, Vector mapSize)
+void Camera::Update(Vector playerPos, Vector mapSize, float deltaTime)
 {
-	_cameraPos = playerPos;
+	_cameraPos.y -= _speed * deltaTime;
 
-	float halfSizeX = GWinSizeX / 2;
-	float halfSizeY = GWinSizeY / 2;
-
-	//_cameraPos.x = clamp(_cameraPos.x, halfSizeX, mapSize.x - halfSizeX);
-	_cameraPos.x = clamp(_cameraPos.x, halfSizeX, halfSizeX);
-	_cameraPos.y = clamp(_cameraPos.y, mapSize.y - halfSizeY, mapSize.y - halfSizeY);
+	//_cameraPos = playerPos;
+	//float halfSizeX = GWinSizeX / 2;
+	//float halfSizeY = GWinSizeY / 2;
+	////_cameraPos.x = clamp(_cameraPos.x, halfSizeX, mapSize.x - halfSizeX);
+	//_cameraPos.x = clamp(_cameraPos.x, halfSizeX, halfSizeX);
+	//_cameraPos.y = clamp(_cameraPos.y, mapSize.y - halfSizeY, mapSize.y - halfSizeY);
 }
 
 Vector Camera::ConvertScreenPos(Vector worldPos)

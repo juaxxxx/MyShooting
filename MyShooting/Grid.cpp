@@ -61,16 +61,16 @@ void Grid::Render(HDC hdc)
 	{
 		// 라인 그리기
 		Vector convertPos = Camera::ConvertScreenPos(Vector(x, 0));
-		MoveToEx(hdc, convertPos.x + x * Grid::CELL_SIZE, 0, nullptr);
-		LineTo(hdc, convertPos.x + x * Grid::CELL_SIZE, 9700);
+		MoveToEx(hdc, convertPos.x + x * (Grid::CELL_SIZE - 1), 0, nullptr);
+		LineTo(hdc, convertPos.x + x * (Grid::CELL_SIZE - 1), 9700);
 	}
 
 	for (int y = 0; y < COL_NUM_CELL; y++)
 	{
 		// 라인 그리기
 		Vector convertPos = Camera::ConvertScreenPos(Vector(0, y));
-		MoveToEx(hdc, 0, convertPos.y + y * Grid::CELL_SIZE, nullptr);
-		LineTo(hdc, 800, convertPos.y + y * Grid::CELL_SIZE);
+		MoveToEx(hdc, 0, convertPos.y + y * (Grid::CELL_SIZE - 1), nullptr);
+		LineTo(hdc, 800, convertPos.y + y * (Grid::CELL_SIZE - 1));
 	}
 
 

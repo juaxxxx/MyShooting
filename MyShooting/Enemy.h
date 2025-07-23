@@ -22,5 +22,6 @@ private:
 	float _speed;
 	float _angle;
 	float _FOV;
+	Vector _convertPos;
 };
 

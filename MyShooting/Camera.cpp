@@ -10,8 +10,9 @@ void Camera::Update(Vector playerPos, Vector mapSize)
 	float halfSizeX = GWinSizeX / 2;
 	float halfSizeY = GWinSizeY / 2;
 
-	_cameraPos.x = clamp(_cameraPos.x, halfSizeX, mapSize.x - halfSizeX);
-	_cameraPos.y = clamp(_cameraPos.y, halfSizeX, mapSize.y - halfSizeY);
+	//_cameraPos.x = clamp(_cameraPos.x, halfSizeX, mapSize.x - halfSizeX);
+	_cameraPos.x = clamp(_cameraPos.x, halfSizeX, halfSizeX);
+	_cameraPos.y = clamp(_cameraPos.y, mapSize.y - halfSizeY, mapSize.y - halfSizeY);
 }
 
 Vector Camera::ConvertScreenPos(Vector worldPos)

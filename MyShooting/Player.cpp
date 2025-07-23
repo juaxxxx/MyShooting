@@ -79,15 +79,10 @@ void Player::Render(HDC hdc)
 	// 펜 생성
 	HPEN myPen = CreatePen(PS_SOLID, 3, RGB(0, 255, 255));
 	HPEN oldPen = (HPEN)SelectObject(hdc, myPen);
-	
-	//Vector convert = Camera::ConvertScreenPos(Vector(_gridX, _gridY));
 
 	int32 cellX = _gridX;
 	int32 cellY = _gridY;
-	//Vector convertPos = Camera::ConvertScreenPos(_pos);
 
-	//int32 cellX = PosToIndex(convertPos.x);
-	//int32 cellY = PosToIndex(convertPos.y);
 	auto convertGridPos = [cellX, cellY, this](HDC hdc, int32 offsetX_1, int32 offsetY_1, int32 offsetX_2, int32 offsetY_2)
 		{
 			int32 x1 = (cellX + offsetX_1) * Grid::CELL_SIZE;
@@ -107,43 +102,13 @@ void Player::Render(HDC hdc)
 	
 	// 라인 그리기
 	convertGridPos(hdc, -1, -1, -1, 2);
-	//MoveToEx(hdc, (cellX - 1) * Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE, nullptr);
-	//LineTo(hdc, (cellX - 1) * Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE);
-
-	// 라인 그리기
 	convertGridPos(hdc, 0, -1, 0, 2);
-	//MoveToEx(hdc, (cellX) * Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE, nullptr);
-	//LineTo(hdc, (cellX) * Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE);
-
-	// 라인 그리기
 	convertGridPos(hdc, 1, -1, 1, 2);
-	//MoveToEx(hdc, (cellX + 1)*Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE, nullptr);
-	//LineTo(hdc, (cellX + 1)*Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE);
-
-	// 라인 그리기
 	convertGridPos(hdc, 2, -1, 2, 2);
-	//MoveToEx(hdc, (cellX + 2) * Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE, nullptr);
-	//LineTo(hdc, (cellX + 2) * Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE);
-
-	// 라인 그리기
 	convertGridPos(hdc, -1, -1, 2, -1);
-	//MoveToEx(hdc, (cellX - 1)*Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE, nullptr);
-	//LineTo(hdc, (cellX + 2)*Grid::CELL_SIZE, (cellY - 1) * Grid::CELL_SIZE);
-
-	// 라인 그리기
 	convertGridPos(hdc, -1, 0, 2, 0);
-	//MoveToEx(hdc, (cellX - 1) * Grid::CELL_SIZE, (cellY) * Grid::CELL_SIZE, nullptr);
-	//LineTo(hdc, (cellX + 2) * Grid::CELL_SIZE, (cellY) * Grid::CELL_SIZE);
-
-	// 라인 그리기
 	convertGridPos(hdc, -1, 1, 2, 1);
-	//MoveToEx(hdc, (cellX - 1) * Grid::CELL_SIZE, (cellY + 1) * Grid::CELL_SIZE, nullptr);
-	//LineTo(hdc, (cellX + 2) * Grid::CELL_SIZE, (cellY + 1) * Grid::CELL_SIZE);
-
-	// 라인 그리기
 	convertGridPos(hdc, -1, 2, 2, 2);
-	//MoveToEx(hdc, (cellX - 1) * Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE, nullptr);
-	//LineTo(hdc, (cellX + 2) * Grid::CELL_SIZE, (cellY + 2) * Grid::CELL_SIZE);
 
 	// 이전 펜 복원 및 새 펜 삭제
 	SelectObject(hdc, oldPen);

@@ -6,6 +6,7 @@
 #include "TextureResource.h"
 #include "ResourceManager.h"
 #include "Grid.h"
+#include "Camera.h"
 
 Missile::~Missile()
 {
@@ -45,8 +46,12 @@ void Missile::Update(float deltaTime)
 	_pos.x += (_speed * ::cos(_angle) * deltaTime);
 	_pos.y -= (_speed * ::sin(_angle) * deltaTime);
 
+	Vector cameraPos = Camera::GetCameraPos();
 	// 화면 밖을 벗어났는지 확인후 소멸
-	if (_pos.x < 0 || _pos.x >= GWinSizeX || _pos.y < 0 || _pos.y >= GWinSizeY)
+	if (_pos.x < cameraPos.x - (GWinSizeX / 2) ||
+		_pos.x >= cameraPos.x + (GWinSizeX / 2) ||
+		_pos.y < cameraPos.y - (GWinSizeY / 2) ||
+		_pos.y >= cameraPos.y + (GWinSizeY / 2))
 	{
 		// this 객체가 delete 소멸시키고 나서 더이상 로직 처리 못하게 냅다 리턴하고 ㅌㅌ
 		gameScene->RemoveMissile(this);

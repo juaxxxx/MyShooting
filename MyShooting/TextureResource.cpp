@@ -112,39 +112,39 @@ void TextureResource::Render(HDC hdc, Vector pos, Vector frame, Vector size)
 
 	Vector screenPos = Camera::ConvertScreenPos(pos);
 
-	::BitBlt(hdc,	// 백버퍼에
-		(int32)screenPos.x - (size.x / 2),	// 텍스처를 중심좌표로 그리기위해 size의 절반만큼 빼준다.
-		(int32)screenPos.y - (size.y / 2),
-		size.x,
-		size.y,
-		_textureHdc,	// 텍스쳐 그리기
-		frame.x,
-		frame.y,
-		SRCCOPY);
-	//if (_transparent == -1)
-	//{
-	//	::BitBlt(hdc,	// 백버퍼에
-	//		(int32)pos.x - (size.x / 2),	// 텍스처를 중심좌표로 그리기위해 size의 절반만큼 빼준다.
-	//		(int32)pos.y - (size.y / 2),
-	//		size.x,
-	//		size.y,
-	//		_textureHdc,	// 텍스쳐 그리기
-	//		frame.x,
-	//		frame.y,
-	//		SRCCOPY);
-	//}
-	//else
-	//{
-	//	::TransparentBlt(hdc,
-	//		(int32)pos.x - (_sizeX / 2),
-	//		(int32)pos.y - (_sizeY / 2),
-	//		_sizeX,
-	//		_sizeY,
-	//		_textureHdc,
-	//		frame.x,
-	//		frame.y,
-	//		_sizeX,
-	//		_sizeY,
-	//		_transparent);	// 어떤색상을 투명하게 그릴까
-	//}
+	//::BitBlt(hdc,	// 백버퍼에
+	//	(int32)screenPos.x - (size.x / 2),	// 텍스처를 중심좌표로 그리기위해 size의 절반만큼 빼준다.
+	//	(int32)screenPos.y - (size.y / 2),
+	//	size.x,
+	//	size.y,
+	//	_textureHdc,	// 텍스쳐 그리기
+	//	frame.x,
+	//	frame.y,
+	//	SRCCOPY);
+	if (_transparent == -1)
+	{
+		::BitBlt(hdc,	// 백버퍼에
+			(int32)screenPos.x - (size.x / 2),	// 텍스처를 중심좌표로 그리기위해 size의 절반만큼 빼준다.
+			(int32)screenPos.y - (size.y / 2),
+			size.x,
+			size.y,
+			_textureHdc,	// 텍스쳐 그리기
+			frame.x,
+			frame.y,
+			SRCCOPY);
+	}
+	else
+	{
+		::TransparentBlt(hdc,
+			(int32)screenPos.x - (size.x / 2),	// 텍스처를 중심좌표로 그리기위해 size의 절반만큼 빼준다.
+			(int32)screenPos.y - (size.y / 2),
+			size.x,
+			size.y,
+			_textureHdc,
+			frame.x,
+			frame.y,
+			size.x,
+			size.y,
+			_transparent);	// 어떤색상을 투명하게 그릴까
+	}
 }
